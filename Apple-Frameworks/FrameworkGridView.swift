@@ -15,39 +15,48 @@ struct FrameworkGridView: View {
     ] //añadimos columnas
     
     var body: some View {
-        LazyVGrid(columns: columns) {
-            FrameworkTitleView(name: "App Clips", imageName: "app-clip")
-            FrameworkTitleView(name: "App Clips", imageName: "app-clip")
-            FrameworkTitleView(name: "App Clips", imageName: "app-clip")
-            FrameworkTitleView(name: "App Clips", imageName: "app-clip")
-            FrameworkTitleView(name: "App Clips", imageName: "app-clip")
-            FrameworkTitleView(name: "App Clips", imageName: "app-clip")
+        NavigationView {
+            ScrollView {
+                LazyVGrid(columns: columns) {
+                    ForEach(MockData.frameworks, id:\.id) { framework in
+                        FrameworkTitleView(framework: framework)
+                    }
+                }
+            }
             
+            .navigationTitle("Apple Frameworks")
+            /*
+             como le hemos asignado un id en el archivo Framewrok, podríamos eliminar el parámetro id del ForEach
+             */
         }
     }
 }
 
 #Preview {
     FrameworkGridView()
+        .preferredColorScheme(/*@START_MENU_TOKEN@*/.dark/*@END_MENU_TOKEN@*/)
 }
 
 
 
 struct FrameworkTitleView: View {
     
-    let name: String
-    let imageName: String
+    let framework: Framework
+    
+    //let name: String
+    //let imageName: String
     
     var body: some View {
         VStack {
-            Image(imageName)
+            Image(framework.imageName)
                 .resizable()
                 .frame(width: 90, height: 90)
-            Text(name)
+            Text(framework.name)
                 .font(.title2)
                 .fontWeight(.semibold)
                 .scaledToFit()
                 .minimumScaleFactor(0.6)
         }
+        .padding()
     }
 }
